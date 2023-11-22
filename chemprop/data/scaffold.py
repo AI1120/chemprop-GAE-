@@ -1,6 +1,5 @@
 from collections import defaultdict
 import logging
-from random import Random
 from typing import Dict, List, Set, Tuple, Union
 import warnings
 import copy
@@ -11,6 +10,7 @@ from tqdm import tqdm
 import numpy as np
 
 from .data import MoleculeDataset, make_mol
+import secrets
 
 
 def generate_scaffold(mol: Union[str, Chem.Mol, Tuple[Chem.Mol, Chem.Mol]], include_chirality: bool = False) -> str:
@@ -86,7 +86,7 @@ def scaffold_split(data: MoleculeDataset,
     scaffold_to_indices = scaffold_to_smiles(key_mols, use_indices=True)
 
     # Seed randomness
-    random = Random(seed)
+    random = secrets.SystemRandom().Random(seed)
 
     if balanced:  # Put stuff that's bigger than half the val/test size into train, rest just order randomly
         index_sets = list(scaffold_to_indices.values())
@@ -97,9 +97,9 @@ def scaffold_split(data: MoleculeDataset,
                 big_index_sets.append(index_set)
             else:
                 small_index_sets.append(index_set)
-        random.seed(seed)
-        random.shuffle(big_index_sets)
-        random.shuffle(small_index_sets)
+        secrets.SystemRandom().seed(seed)
+        secrets.SystemRandom().shuffle(big_index_sets)
+        secrets.SystemRandom().shuffle(small_index_sets)
         index_sets = big_index_sets + small_index_sets
     else:  # Sort from largest to smallest scaffold sets
         index_sets = sorted(list(scaffold_to_indices.values()),

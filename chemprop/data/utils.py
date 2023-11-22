@@ -4,7 +4,6 @@ import csv
 import ctypes
 from logging import Logger
 import pickle
-from random import Random
 from typing import List, Set, Tuple, Union
 import os
 import json
@@ -19,6 +18,7 @@ from .scaffold import log_scaffold_stats, scaffold_split
 from chemprop.args import PredictArgs, TrainArgs
 from chemprop.features import load_features, load_valid_atom_or_bond_features, is_mol
 from chemprop.rdkit import make_mol
+import secrets
 
 # Increase maximum size of field in the csv processing for the current architecture
 csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
@@ -686,7 +686,7 @@ def split_data(data: MoleculeDataset,
     if any([size < 0 for size in sizes]):
         raise ValueError(f"Split sizes must be non-negative. Received train/val/test splits: {sizes}")
 
-    random = Random(seed)
+    random = secrets.SystemRandom().Random(seed)
 
     if args is not None:
         folds_file, val_fold_index, test_fold_index = \
@@ -710,10 +710,10 @@ def split_data(data: MoleculeDataset,
         if num_folds <= 1 or num_folds > len(data):
             raise ValueError(f'Number of folds for cross-validation must be between 2 and the number of valid datapoints ({len(data)}), inclusive.')
 
-        random = Random(0)
+        random = secrets.SystemRandom().Random(0)
 
         indices = np.tile(np.arange(num_folds), 1 + len(data) // num_folds)[:len(data)]
-        random.shuffle(indices)
+        secrets.SystemRandom().shuffle(indices)
         test_index = seed % num_folds
         val_index = (seed + 1) % num_folds
 
@@ -773,7 +773,7 @@ def split_data(data: MoleculeDataset,
         if val_fold_index is not None:
             train = train_val
         else:
-            random.shuffle(train_val)
+            secrets.SystemRandom().shuffle(train_val)
             train_size = int(sizes[0] * len(train_val))
             train = train_val[:train_size]
             val = train_val[train_size:]
@@ -788,8 +788,8 @@ def split_data(data: MoleculeDataset,
         for i, smiles in enumerate(data.smiles()):
             smiles_dict[smiles[key_molecule_index]].add(i)
         index_sets = list(smiles_dict.values())
-        random.seed(seed)
-        random.shuffle(index_sets)
+        secrets.SystemRandom().seed(seed)
+        secrets.SystemRandom().shuffle(index_sets)
         train, val, test = [], [], []
         train_size = int(sizes[0] * len(data))
         val_size = int(sizes[1] * len(data))
@@ -808,7 +808,7 @@ def split_data(data: MoleculeDataset,
 
     elif split_type == 'random':
         indices = list(range(len(data)))
-        random.shuffle(indices)
+        secrets.SystemRandom().shuffle(indices)
 
         train_size = int(sizes[0] * len(data))
         train_val_size = int((sizes[0] + sizes[1]) * len(data))

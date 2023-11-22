@@ -1,9 +1,9 @@
 from copy import deepcopy
 import os
 import pickle
-import random
 
 from tap import Tap  # pip install typed-argument-parser (https://github.com/swansonk14/typed-argument-parser)
+import secrets
 
 
 class Args(Tap):
@@ -14,13 +14,13 @@ class Args(Tap):
 
 
 def create_crossval_indices(args: Args):
-    random.seed(0)
+    secrets.SystemRandom().seed(0)
     if args.test_folds_to_test is None:
         args.test_folds_to_test = args.num_folds
     if args.val_folds_per_test is None:
         args.val_folds_per_test = args.num_folds - 1
     folds = list(range(args.num_folds))
-    random.shuffle(folds)
+    secrets.SystemRandom().shuffle(folds)
     os.makedirs(args.save_dir, exist_ok=True)
     for i in folds[:args.test_folds_to_test]:
         with open(os.path.join(args.save_dir, f'{i}_opt.pkl'), 'wb') as valf, open(os.path.join(args.save_dir, f'{i}_test.pkl'), 'wb') as testf:
@@ -28,7 +28,7 @@ def create_crossval_indices(args: Args):
             test_index_sets = []
             index_folds = deepcopy(folds)
             index_folds.remove(i)
-            random.shuffle(index_folds)
+            secrets.SystemRandom().shuffle(index_folds)
             for val_index in index_folds[:args.val_folds_per_test]:
                 train, val, test = [index for index in index_folds if index != val_index], [val_index], [i]  # test set = val set during cv for now
                 index_sets.append([train, val, val])

@@ -11,6 +11,7 @@ from tap import Tap  # pip install typed-argument-parser (https://github.com/swa
 
 from chemprop.data import MoleculeDataset
 from chemprop.data import get_data, scaffold_to_smiles
+import secrets
 
 
 class Args(Tap):
@@ -44,10 +45,10 @@ def split_indices(all_indices: List[int],
             min_index = length_array.index(min(length_array))
             fold_indices[min_index] += s
         if shuffle:
-            random.shuffle(fold_indices)
+            secrets.SystemRandom().shuffle(fold_indices)
     else:  # random
         if shuffle:
-            random.shuffle(all_indices)
+            secrets.SystemRandom().shuffle(all_indices)
         fold_indices = []
         for i in range(num_folds):
             begin, end = int(i * num_data / num_folds), int((i + 1) * num_data / num_folds)
@@ -100,7 +101,7 @@ def create_crossval_splits(args: Args):
         fold_indices = split_indices(all_indices, args.num_folds, scaffold=True, split_key_molecule=args.split_key_molecule, data=data)
     else:
         raise ValueError
-    random.shuffle(fold_indices)
+    secrets.SystemRandom().shuffle(fold_indices)
     for i in range(args.test_folds_to_test):
         all_splits = []
         for j in range(1, args.val_folds_per_test + 1):
@@ -124,7 +125,7 @@ def create_crossval_splits(args: Args):
 if __name__ == '__main__':
     args = Args().parse_args()
 
-    random.seed(0)
+    secrets.SystemRandom().seed(0)
 
     if args.save_dir is None:
         args.save_dir = os.path.dirname(args.data_path)
