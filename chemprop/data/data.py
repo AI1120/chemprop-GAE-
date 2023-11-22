@@ -1,6 +1,5 @@
 import threading
 from collections import OrderedDict
-from random import Random
 from typing import Dict, Iterator, List, Optional, Union, Tuple
 
 import numpy as np
@@ -12,6 +11,7 @@ from chemprop.features import get_features_generator
 from chemprop.features import BatchMolGraph, MolGraph
 from chemprop.features import is_explicit_h, is_reaction, is_adding_hs, is_mol, is_keeping_atom_map
 from chemprop.rdkit import make_mol
+import secrets
 
 # Cache of graph featurizations
 CACHE_GRAPH = True
@@ -311,7 +311,7 @@ class MoleculeDataset(Dataset):
         """
         self._data = data
         self._batch_graph = None
-        self._random = Random()
+        self._random = secrets.SystemRandom().Random()
 
     def smiles(self, flatten: bool = False) -> Union[List[str], List[List[str]]]:
         """
@@ -797,7 +797,7 @@ class MoleculeSampler(Sampler):
         self.class_balance = class_balance
         self.shuffle = shuffle
 
-        self._random = Random(seed)
+        self._random = secrets.SystemRandom().Random(seed)
 
         if self.class_balance:
             indices = np.arange(len(dataset))
