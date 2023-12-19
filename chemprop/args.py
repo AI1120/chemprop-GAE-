@@ -776,7 +776,7 @@ class TrainArgs(CommonArgs):
         else:
             if not np.isclose(sum(self.split_sizes), 1):
                 raise ValueError(f'Provided split sizes of {self.split_sizes} do not sum to 1.')
-            if any([size < 0 for size in self.split_sizes]):
+            if any(size < 0 for size in self.split_sizes):
                 raise ValueError(f'Split sizes must be non-negative. Received split sizes: {self.split_sizes}')
 
 

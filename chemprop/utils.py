@@ -728,7 +728,7 @@ def save_smiles_splits(
 
         if name == "train":
             data_weights = dataset.data_weights()
-            if any([w != 1 for w in data_weights]):
+            if any(w != 1 for w in data_weights):
                 with open(os.path.join(save_dir, f"{name}_weights.csv"), "w", newline="") as f:
                     writer = csv.writer(f)
                     writer.writerow(["data weights"])
