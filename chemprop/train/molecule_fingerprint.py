@@ -164,7 +164,7 @@ def molecule_fingerprint(args: FingerprintArgs,
     # Copy predictions over to full_data
     for full_index, datapoint in enumerate(full_data):
         valid_index = full_to_valid_indices.get(full_index, None)
-        preds = all_fingerprints[valid_index].reshape((len(args.checkpoint_paths) * total_fp_size)) if valid_index is not None else ['Invalid SMILES'] * len(args.checkpoint_paths) * total_fp_size
+        preds = all_fingerprints[valid_index].reshape((len(args.checkpoint_paths) * total_fp_size)) if valid_index != None else ['Invalid SMILES'] * len(args.checkpoint_paths) * total_fp_size
 
         for i in range(len(fingerprint_columns)):
             datapoint.row[fingerprint_columns[i]] = preds[i]
@@ -180,7 +180,7 @@ def molecule_fingerprint(args: FingerprintArgs,
         full_fingerprints = np.zeros((len(full_data), total_fp_size, len(args.checkpoint_paths)), dtype='object')
         for full_index in range(len(full_data)):
             valid_index = full_to_valid_indices.get(full_index, None)
-            preds = all_fingerprints[valid_index] if valid_index is not None else np.full((total_fp_size, len(args.checkpoint_paths)), 'Invalid SMILES')
+            preds = all_fingerprints[valid_index] if valid_index != None else np.full((total_fp_size, len(args.checkpoint_paths)), 'Invalid SMILES')
             full_fingerprints[full_index] = preds
         return full_fingerprints
     else:

@@ -424,7 +424,7 @@ def get_data(path: str,
         for d_phase in phase_features:
             if not (d_phase.sum() == 1 and np.count_nonzero(d_phase) == 1):
                 raise ValueError('Phase features must be one-hot encoded.')
-        if features_data is not None:
+        if features_data != None:
             features_data = np.concatenate((features_data, phase_features), axis=1)
         else:  # if there are no other molecular features, phase features become the only molecular features
             features_data = np.array(phase_features)
@@ -516,7 +516,7 @@ def get_data(path: str,
             all_atom_targets.append(atom_targets)
             all_bond_targets.append(bond_targets)
 
-            if features_data is not None:
+            if features_data != None:
                 all_features.append(features_data[i])
 
             if phase_features is not None:
