@@ -108,8 +108,7 @@ def find_clusters(mol: Chem.Mol) -> Tuple[List[Tuple[int, ...]], List[List[int]]
     :return: A tuple containing a list of atom tuples representing the clusters
              and a list of lists of atoms in each cluster.
     """
-    n_atoms = mol.GetNumAtoms()
-    if n_atoms == 1:  # special case
+    if (n_atoms := mol.GetNumAtoms()) == 1:  # special case
         return [(0,)], [[0]]
 
     clusters = []
@@ -192,9 +191,8 @@ def extract_subgraph(smiles: str, selected_atoms: Set[int]) -> Tuple[str, List[i
     # If fails, try without kekulization
     subgraph, roots = __extract_subgraph(mol, selected_atoms)
     subgraph = Chem.MolToSmiles(subgraph)
-    subgraph = Chem.MolFromSmiles(subgraph)
 
-    if subgraph is not None:
+    if (subgraph := Chem.MolFromSmiles(subgraph)) is not None:
         return Chem.MolToSmiles(subgraph), roots
     else:
         return None, None

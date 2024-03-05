@@ -930,14 +930,12 @@ def validate_data(data_path: str) -> Set[str]:
     elif len(header) < 2:
         errors.add('Header must include task names.')
 
-    mol = Chem.MolFromSmiles(header[0])
-    if mol is not None:
+    if (mol := Chem.MolFromSmiles(header[0])) is not None:
         errors.add('First row is a SMILES string instead of a header.')
 
     # Validate smiles
     for smile in tqdm(smiles, total=len(smiles)):
-        mol = Chem.MolFromSmiles(smile)
-        if mol is None:
+        if (mol := Chem.MolFromSmiles(smile)) is None:
             errors.add('Data includes an invalid SMILES.')
 
     # Validate targets

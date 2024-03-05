@@ -73,9 +73,8 @@ def close_db(e: Optional[Any] = None):
 
     :param e: Error object from last call.
     """
-    db = g.pop('db', None)
 
-    if db is not None:
+    if (db := g.pop('db', None)) is not None:
         db.close()
 
 

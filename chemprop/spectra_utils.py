@@ -18,8 +18,7 @@ def normalize_spectra(spectra: List[List[float]], phase_features: List[List[floa
     :return: List form array of spectra with shape (num_spectra, spectrum length) with exlcuded values converted to nan.
     """
     normalized_spectra = []
-    phase_exclusion = phase_mask is not None and phase_features is not None
-    if phase_exclusion:
+    if phase_exclusion := phase_mask is not None and phase_features is not None:
         phase_mask = np.array(phase_mask)
     
     num_iters, iter_step = len(spectra), batch_size

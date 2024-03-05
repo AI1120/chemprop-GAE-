@@ -37,9 +37,8 @@ def load_features(path: str) -> np.ndarray:
     :param path: Path to a file containing features.
     :return: A 2D numpy array of size :code:`(num_molecules, features_size)` containing the features.
     """
-    extension = os.path.splitext(path)[1]
 
-    if extension == '.npz':
+    if (extension := os.path.splitext(path)[1]) == '.npz':
         features = np.load(path)['features']
     elif extension == '.npy':
         features = np.load(path)
@@ -71,9 +70,8 @@ def load_valid_atom_or_bond_features(path: str, smiles: List[str]) -> List[np.nd
     :return: A list of 2D array.
     """
 
-    extension = os.path.splitext(path)[1]
 
-    if extension == '.npz':
+    if (extension := os.path.splitext(path)[1]) == '.npz':
         container = np.load(path)
         features = [container[key] for key in container]
 

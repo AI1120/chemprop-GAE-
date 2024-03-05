@@ -948,9 +948,8 @@ def build_uncertainty_calibrator(
         else IsotonicMulticlassCalibrator,
     }
 
-    calibrator_class = supported_calibrators.get(calibration_method, None)
 
-    if calibrator_class is None:
+    if (calibrator_class := supported_calibrators.get(calibration_method, None)) is None:
         raise NotImplementedError(
             f"Calibrator type {calibration_method} is not currently supported. Avalable options are: {list(supported_calibrators.keys())}"
         )

@@ -1281,9 +1281,8 @@ def build_uncertainty_predictor(
         "spectra_roundrobin": RoundRobinSpectraPredictor,
     }
 
-    predictor_class = supported_predictors.get(uncertainty_method, None)
 
-    if predictor_class is None:
+    if (predictor_class := supported_predictors.get(uncertainty_method, None)) is None:
         raise NotImplementedError(
             f"Uncertainty predictor type {uncertainty_method} is not currently supported. Avalable options are: {list(supported_predictors.keys())}"
         )

@@ -160,9 +160,8 @@ def create_user():
     if request.method == 'GET':
         return render_template('create_user.html', users=db.get_all_users())
 
-    new_name = request.form['newUserName']
 
-    if new_name is not None:
+    if (new_name := request.form['newUserName']) is not None:
         db.insert_user(new_name)
 
     return redirect(url_for('create_user'))
