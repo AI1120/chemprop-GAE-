@@ -1,11 +1,11 @@
 import csv
 import os
-import pickle
 from typing import List
 
 import numpy as np
 import pandas as pd
 from rdkit.Chem import PandasTools
+import fickling
 
 
 def save_features(path: str, features: List[np.ndarray]) -> None:
@@ -50,7 +50,7 @@ def load_features(path: str) -> np.ndarray:
             features = np.array([[float(value) for value in row] for row in reader])
     elif extension in ['.pkl', '.pckl', '.pickle']:
         with open(path, 'rb') as f:
-            features = np.array([np.squeeze(np.array(feat.todense())) for feat in pickle.load(f)])
+            features = np.array([np.squeeze(np.array(feat.todense())) for feat in fickling.load(f)])
     else:
         raise ValueError(f'Features path extension {extension} not supported.')
 

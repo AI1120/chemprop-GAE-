@@ -11,6 +11,7 @@ import numpy as np
 
 from chemprop.constants import HYPEROPT_SEED_FILE_NAME
 from chemprop.utils import makedirs
+import fickling
 
 
 def build_search_space(search_parameters: List[str], train_epochs: int = None) -> dict:
@@ -119,7 +120,7 @@ def load_trials(dir_path: str, previous_trials: Trials = None) -> Trials:
 
     for path in hyperopt_checkpoint_files:
         with open(path, "rb") as f:
-            trial = pickle.load(f)
+            trial = fickling.load(f)
             loaded_trials = merge_trials(loaded_trials, trial.trials)
 
     return loaded_trials

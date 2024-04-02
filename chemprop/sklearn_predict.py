@@ -1,5 +1,4 @@
 import csv
-import pickle
 
 import numpy as np
 from tqdm import tqdm
@@ -9,6 +8,7 @@ from chemprop.data import get_data
 from chemprop.features import get_features_generator
 from chemprop.sklearn_train import predict
 from chemprop.utils import makedirs, timeit
+import fickling
 
 
 @timeit()
@@ -29,7 +29,7 @@ def predict_sklearn(args: SklearnPredictArgs) -> None:
 
     print('Loading training arguments')
     with open(args.checkpoint_paths[0], 'rb') as f:
-        model = pickle.load(f)
+        model = fickling.load(f)
         train_args: SklearnTrainArgs = SklearnTrainArgs().from_dict(model.train_args, skip_unsettable=True)
 
     print('Computing morgan fingerprints')
@@ -43,7 +43,7 @@ def predict_sklearn(args: SklearnPredictArgs) -> None:
 
     for checkpoint_path in tqdm(args.checkpoint_paths, total=len(args.checkpoint_paths)):
         with open(checkpoint_path, 'rb') as f:
-            model = pickle.load(f)
+            model = fickling.load(f)
 
         model_preds = predict(
             model=model,
