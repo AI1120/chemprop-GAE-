@@ -215,7 +215,7 @@ def predict_and_save(
     else:
         evaluators = None
 
-    if evaluators is not None:
+    if evaluators != None:
         evaluations = []
         print(f"Evaluating uncertainty for tasks {task_names}")
         for evaluator in evaluators:
@@ -307,7 +307,7 @@ def predict_and_save(
             for datapoint in full_data:
                 writer.writerow(datapoint.row)
 
-        if evaluations is not None and args.evaluation_scores_path is not None:
+        if evaluations != None and args.evaluation_scores_path is not None:
             print(f"Saving uncertainty evaluations to {args.evaluation_scores_path}")
             if args.dataset_type == "multiclass":
                 task_names = original_task_names
