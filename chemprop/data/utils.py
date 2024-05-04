@@ -62,7 +62,7 @@ def preprocess_smiles_columns(path: str,
             columns = get_header(path)
             if len(smiles_columns) != number_of_molecules:
                 raise ValueError('Length of smiles_columns must match number_of_molecules.')
-            if any([smiles not in columns for smiles in smiles_columns]):
+            if any(smiles not in columns for smiles in smiles_columns):
                 raise ValueError('Provided smiles_columns do not match the header of data file.')
 
     return smiles_columns
@@ -467,9 +467,9 @@ def get_data(path: str,
     with open(path) as f:
         reader = csv.DictReader(f)
         fieldnames = reader.fieldnames
-        if any([c not in fieldnames for c in smiles_columns]):
+        if any(c not in fieldnames for c in smiles_columns):
             raise ValueError(f'Data file did not contain all provided smiles columns: {smiles_columns}. Data file field names are: {fieldnames}')
-        if any([c not in fieldnames for c in target_columns]):
+        if any(c not in fieldnames for c in target_columns):
             raise ValueError(f'Data file did not contain all provided target columns: {target_columns}. Data file field names are: {fieldnames}')
 
         all_smiles, all_targets, all_atom_targets, all_bond_targets, all_rows, all_features, all_phase_features, all_constraints_data, all_raw_constraints_data, all_weights, all_gt, all_lt = [], [], [], [], [], [], [], [], [], [], [], []
@@ -652,7 +652,7 @@ def get_inequality_targets(path: str, target_columns: List[str] = None) -> List[
             values = [line[col] for col in target_columns]
             gt_targets.append(['>' in val for val in values])
             lt_targets.append(['<' in val for val in values])
-            if any(['<' in val and '>' in val for val in values]):
+            if any('<' in val and '>' in val for val in values):
                 raise ValueError(f'A target value in csv file {path} contains both ">" and "<" symbols. Inequality targets must be on one edge and not express a range.')
 
     return gt_targets, lt_targets
@@ -683,7 +683,7 @@ def split_data(data: MoleculeDataset,
     """
     if not (len(sizes) == 3 and np.isclose(sum(sizes), 1)):
         raise ValueError(f"Split sizes do not sum to 1. Received train/val/test splits: {sizes}")
-    if any([size < 0 for size in sizes]):
+    if any(size < 0 for size in sizes):
         raise ValueError(f"Split sizes must be non-negative. Received train/val/test splits: {sizes}")
 
     random = secrets.SystemRandom().Random(seed)

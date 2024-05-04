@@ -55,7 +55,7 @@ def merge_trials(trials: Trials, new_trials_data: List[Dict]) -> Trials:
     :return: A hyperopt trials object, merged from the two inputs.
     """
     if len(trials.trials) > 0:
-        max_tid = max([trial["tid"] for trial in trials.trials])
+        max_tid = max(trial["tid"] for trial in trials.trials)
         trial_keys = set(trials.vals.keys())
         for trial in trials.trials:
             new_trial_keys = set(trial["misc"]["vals"].keys())
