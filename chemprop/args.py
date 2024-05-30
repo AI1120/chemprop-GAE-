@@ -705,7 +705,7 @@ class TrainArgs(CommonArgs):
 
         if self.metric in self.extra_metrics:
             raise ValueError(f'Metric {self.metric} is both the metric and is in extra_metrics. '
-                             f'Please only include it once.')
+                             'Please only include it once.')
 
         for metric in self.metrics:
             if not any([(self.dataset_type == 'classification' and metric in ['auc', 'prc-auc', 'accuracy', 'binary_cross_entropy', 'f1', 'mcc']),

@@ -369,7 +369,7 @@ class MolGraph:
             self.n_atoms = len(self.f_atoms)
             if atom_features_extra is not None and len(atom_features_extra) != self.n_atoms:
                 raise ValueError(f'The number of atoms in {Chem.MolToSmiles(mol)} is different from the length of '
-                                 f'the extra atom features')
+                                 'the extra atom features')
 
             # Initialize atom to bond mapping for each atom
             for _ in range(self.n_atoms):
@@ -411,7 +411,7 @@ class MolGraph:
 
             if bond_features_extra is not None and len(bond_features_extra) != self.n_bonds / 2:
                 raise ValueError(f'The number of bonds in {Chem.MolToSmiles(mol)} is different from the length of '
-                                 f'the extra bond features')
+                                 'the extra bond features')
 
         else: # Reaction mode
             if atom_features_extra is not None:

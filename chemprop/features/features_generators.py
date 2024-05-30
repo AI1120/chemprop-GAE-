@@ -35,7 +35,7 @@ def get_features_generator(features_generator_name: str) -> FeaturesGenerator:
     """
     if features_generator_name not in FEATURES_GENERATOR_REGISTRY:
         raise ValueError(f'Features generator "{features_generator_name}" could not be found. '
-                         f'If this generator relies on rdkit features, you may need to install descriptastorus.')
+                         'If this generator relies on rdkit features, you may need to install descriptastorus.')
 
     return FEATURES_GENERATOR_REGISTRY[features_generator_name]
 
