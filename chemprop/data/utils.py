@@ -3,7 +3,6 @@ import sys
 import csv
 import ctypes
 from logging import Logger
-import pickle
 from typing import List, Set, Tuple, Union
 import os
 import json
@@ -19,6 +18,7 @@ from chemprop.args import PredictArgs, TrainArgs
 from chemprop.features import load_features, load_valid_atom_or_bond_features, is_mol
 from chemprop.rdkit import make_mol
 import secrets
+import fickling
 
 # Increase maximum size of field in the csv processing for the current architecture
 csv.field_size_limit(int(ctypes.c_ulong(-1).value // 2))
@@ -701,7 +701,7 @@ def split_data(data: MoleculeDataset,
             split_indices = []
             for index in index_set[split]:
                 with open(os.path.join(args.crossval_index_dir, f'{index}.pkl'), 'rb') as rf:
-                    split_indices.extend(pickle.load(rf))
+                    split_indices.extend(fickling.load(rf))
             data_split.append([data[i] for i in split_indices])
         train, val, test = tuple(data_split)
         return MoleculeDataset(train), MoleculeDataset(val), MoleculeDataset(test)
@@ -752,10 +752,10 @@ def split_data(data: MoleculeDataset,
 
         try:
             with open(folds_file, 'rb') as f:
-                all_fold_indices = pickle.load(f)
+                all_fold_indices = fickling.load(f)
         except UnicodeDecodeError:
             with open(folds_file, 'rb') as f:
-                all_fold_indices = pickle.load(f, encoding='latin1')  # in case we're loading indices from python2
+                all_fold_indices = fickling.load(f, encoding='latin1')  # in case we're loading indices from python2
 
         log_scaffold_stats(data, all_fold_indices, logger=logger)
 
