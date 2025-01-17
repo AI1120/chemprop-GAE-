@@ -1,11 +1,11 @@
 import os
-import pickle
 from pprint import pprint
 import sys
 from typing_extensions import Literal
 
 import numpy as np
 from tap import Tap  # pip install typed-argument-parser (https://github.com/swansonk14/typed-argument-parser)
+import fickling
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
@@ -45,7 +45,7 @@ def examine_split_balance(split_type: str):
         for fold in os.listdir(os.path.join(BASE, dataset, split_type)):
             # Open fold indices
             with open(os.path.join(BASE, dataset, split_type, fold, '0', 'split_indices.pckl'), 'rb') as f:
-                indices = pickle.load(f)
+                indices = fickling.load(f)
 
             # Get test data
             test_data = MoleculeDataset([data[index] for index in indices[2]])
