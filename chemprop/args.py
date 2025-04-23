@@ -1,7 +1,6 @@
 import json
 import os
 from tempfile import TemporaryDirectory
-import pickle
 from typing import List, Optional
 from typing_extensions import Literal
 from packaging import version
@@ -14,6 +13,7 @@ import numpy as np
 import chemprop.data.utils
 from chemprop.data import set_cache_mol, empty_cache
 from chemprop.features import get_available_features_generators
+import fickling
 
 
 Metric = Literal['auc', 'prc-auc', 'rmse', 'mae', 'mse', 'r2', 'accuracy', 'cross_entropy', 'binary_cross_entropy', 'sid', 'wasserstein', 'f1', 'mcc', 'bounded_rmse', 'bounded_mae', 'bounded_mse']
@@ -758,7 +758,7 @@ class TrainArgs(CommonArgs):
 
         if self.split_type in ['crossval', 'index_predetermined']:
             with open(self.crossval_index_file, 'rb') as rf:
-                self._crossval_index_sets = pickle.load(rf)
+                self._crossval_index_sets = fickling.load(rf)
             self.num_folds = len(self.crossval_index_sets)
             self.seed = 0
 
